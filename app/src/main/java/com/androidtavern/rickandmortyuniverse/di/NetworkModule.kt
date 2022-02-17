@@ -1,4 +1,4 @@
-package com.androidtavern.rickandmortyuniverse.presentation.di
+package com.androidtavern.rickandmortyuniverse.di
 
 import com.google.gson.GsonBuilder
 import dagger.Module

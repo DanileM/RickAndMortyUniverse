@@ -4,12 +4,12 @@ import android.net.Uri
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.androidtavern.rickandmortyuniverse.data.model.CharacterResponse
-import com.androidtavern.rickandmortyuniverse.data.network.CharacterApi
+import com.androidtavern.rickandmortyuniverse.data.network.CharacterService
 import retrofit2.HttpException
 import javax.inject.Inject
 
 class CharacterPagingDataSource @Inject constructor(
-    private val api: CharacterApi,
+    private val service: CharacterService,
 ) : PagingSource<Int, CharacterResponse>() {
 
     override fun getRefreshKey(state: PagingState<Int, CharacterResponse>): Int? {
@@ -21,7 +21,7 @@ class CharacterPagingDataSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterResponse> {
         return try {
             val pageNumber = params.key ?: 1
-            val response = api.getCharacters(pageNumber)
+            val response = service.getCharacters(pageNumber)
 
             if (response.isSuccessful) {
                 val pageResponse = response.body()
@@ -43,7 +43,7 @@ class CharacterPagingDataSource @Inject constructor(
     }
 
     private fun getPage(page: String?): Int? {
-        if(page == null) return null
+        if (page == null) return null
 
         val uri = Uri.parse(page)
         val pageQuery = uri.getQueryParameter("page")

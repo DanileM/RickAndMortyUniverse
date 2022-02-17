@@ -1,4 +1,4 @@
-package com.androidtavern.rickandmortyuniverse.presentation.di
+package com.androidtavern.rickandmortyuniverse.di
 
 import androidx.paging.PagingSource
 import com.androidtavern.rickandmortyuniverse.data.datasource.CharacterPagingDataSource

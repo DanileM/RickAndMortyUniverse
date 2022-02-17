@@ -1,4 +1,4 @@
-package com.androidtavern.rickandmortyuniverse.presentation.di
+package com.androidtavern.rickandmortyuniverse.di
 
 import com.androidtavern.rickandmortyuniverse.data.model.CharacterResponse
 import com.androidtavern.rickandmortyuniverse.domain.mapper.CharacterMapper
