@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RickAndMortyUniverse</string>
+    <string name="from">From:</string>
+    <string name="dead">Dead</string>
+    <string name="alive">Alive</string>
+    <string name="unknown">Unknown</string>
+</resources>
