@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -28,7 +29,10 @@ import coil.compose.rememberImagePainter
 import coil.size.OriginalSize
 import com.androidtavern.rickandmortyuniverse.R
 import com.androidtavern.rickandmortyuniverse.presentation.model.CharacterUI
-import kotlinx.coroutines.flow.StateFlow
+import com.androidtavern.rickandmortyuniverse.presentation.state.ErrorItem
+import com.androidtavern.rickandmortyuniverse.presentation.state.LoadingItem
+import com.androidtavern.rickandmortyuniverse.presentation.state.LoadingView
+import kotlinx.coroutines.flow.Flow
 
 @Preview
 @Composable
@@ -39,7 +43,7 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Rick and Morty Universe") }
+                title = { Text(text = stringResource(id = R.string.app_title)) }
             )
         }
     ) {
@@ -48,12 +52,43 @@ fun MainScreen(
 }
 
 @Composable
-fun CharacterList(characters: StateFlow<PagingData<CharacterUI>>) {
+fun CharacterList(characters: Flow<PagingData<CharacterUI>>) {
     val characterItems: LazyPagingItems<CharacterUI> = characters.collectAsLazyPagingItems()
+
     LazyColumn {
         items(characterItems) { item ->
             item?.let { character ->
                 CharacterItem(character)
+            }
+        }
+
+        characterItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                }
+                loadState.append is LoadState.Loading -> {
+                    item { LoadingItem() }
+                }
+                loadState.refresh is LoadState.Error -> {
+                    val e = loadState.refresh as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage ?: stringResource(id = R.string.error),
+                            modifier = Modifier.fillParentMaxSize(),
+                            onClickRetry = { retry() }
+                        )
+                    }
+                }
+                loadState.append is LoadState.Error -> {
+                    val e = loadState.append as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage ?: stringResource(id = R.string.error),
+                            onClickRetry = { retry() }
+                        )
+                    }
+                }
             }
         }
     }
@@ -117,7 +152,7 @@ fun CharacterImage(imageUrl: String) {
                     placeholder(R.drawable.unknown)
                 },
             ),
-            contentDescription = "Character Image",
+            contentDescription = stringResource(id = R.string.cd_character_image),
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxWidth()
         )

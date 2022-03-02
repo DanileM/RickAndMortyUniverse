@@ -4,4 +4,8 @@
     <string name="dead">Dead</string>
     <string name="alive">Alive</string>
     <string name="unknown">Unknown</string>
+    <string name="app_title">Rick and Morty Universe</string>
+    <string name="try_again">Try again</string>
+    <string name="cd_character_image">Character Image</string>
+    <string name="error">Error</string>
 </resources>

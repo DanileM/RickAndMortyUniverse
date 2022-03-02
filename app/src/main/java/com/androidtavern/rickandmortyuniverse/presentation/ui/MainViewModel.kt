@@ -26,5 +26,9 @@ class MainViewModel @Inject constructor(
             pagingData.map { character ->
                 mapper.map(character)
             }
-        }.stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            PagingData.empty()
+        )
 }
